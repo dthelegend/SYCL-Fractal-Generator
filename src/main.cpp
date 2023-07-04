@@ -3,17 +3,17 @@
 #include "main.hpp"
 #include <iostream>
 #include <opencv2/opencv.hpp>                                           
-#include <sycl/ext/oneapi/experimental/sycl_complex.hpp>
 #include <sycl/sycl.hpp>
+#include <sycl/ext/oneapi/experimental/sycl_complex.hpp>
 
 // This number of Tiles produces a HD image
-#define NUM_TILES_X 512
-#define NUM_TILES_Y 512
+#define NUM_TILES_X 384
+#define NUM_TILES_Y 384
 
 // From my understanding, square tiles are the most efficient
 #define TILE_SIZE_X 64
 #define TILE_SIZE_Y TILE_SIZE_X
-#define MAX_SIMULTANEOUS_TILES 8
+#define MAX_SIMULTANEOUS_TILES 32
 
 // Argand Diagram Size
 #define ARGAND_START_X -2.0f
@@ -76,13 +76,6 @@ int main(int argc, char const *argv[])
                         zn = zn + c;
                     }
                     
-                    // TODO: Colouring
-                    // Black and White for now
-                    // if(depth < MAX_ITERATIONS) {
-                    //     outPtr.write(coords, sycl::float4(0.0f, 0.0f, 0.0f, 1.0f));
-                    // } else {
-                    //     outPtr.write(coords, sycl::float4(1.0f, 1.0f, 1.0f, 1.0f));
-                    // }
                     float color = (float) depth / (float) MAX_ITERATIONS;
                     outPtr.write(coords, sycl::float4(color, color, color, 1.0f));
                 });
